@@ -9,15 +9,43 @@ const { startCronJobs } = require('./cronJobs/businessSimulator');
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://opspulse-frontend-app.onrender.com',
+  /\.onrender\.com$/
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    const allowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    if (allowed) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true
+};
+
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
-    methods: ['GET', 'POST']
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      const allowed = allowedOrigins.some(o =>
+        typeof o === 'string' ? o === origin : o.test(origin)
+      );
+      if (allowed) return callback(null, true);
+      callback(new Error('Not allowed by CORS'));
+    },
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
 // Middleware
-app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:5173'] }));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
