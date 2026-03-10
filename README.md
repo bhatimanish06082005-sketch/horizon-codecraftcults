@@ -1,112 +1,46 @@
 # 🚀 OpsPulse — Unified Business Health Dashboard
 
-A full-stack real-time business intelligence dashboard for SMBs. Built with React, Node.js, MongoDB, and Socket.io.
+> A real-time business operations dashboard for SMBs — monitor revenue, inventory, support tickets, stress score, and live external data all in one place.
 
 ---
 
-## 📋 Prerequisites
+## 🌐 Live Demo
 
-### 1. Install Node.js
-- Download from https://nodejs.org/ (v18 or higher recommended)
-- Verify: `node --version` and `npm --version`
+| Service | URL |
+|---|---|
+| 🖥️ Frontend | https://opspulse-frontend-app.onrender.com |
+| ⚙️ Backend API | https://opspulse-backend-0xh4.onrender.com |
 
-### 2. Install MongoDB
-
-**Option A — Local MongoDB (Recommended for development):**
-- Mac: `brew tap mongodb/brew && brew install mongodb-community && brew services start mongodb/brew/mongodb-community`
-- Windows: Download from https://www.mongodb.com/try/download/community
-- Linux (Ubuntu): `sudo apt-get install -y mongodb`
-- Verify: `mongosh` should open a shell
-
-**Option B — MongoDB Atlas (Cloud, free tier):**
-1. Create account at https://cloud.mongodb.com
-2. Create a free M0 cluster
-3. Get your connection string: `mongodb+srv://<user>:<pass>@cluster.mongodb.net/opspulse`
-4. Update `backend/.env`: set `MONGODB_URI=your_atlas_connection_string`
-
----
-
-## ⚡ Quick Start
-
-### Step 1: Clone/Extract the project
-```bash
-cd opspulse
-```
-
-### Step 2: Install all dependencies
-```bash
-# Install backend dependencies
-cd backend
-npm install
-
-# Install frontend dependencies
-cd ../frontend
-npm install
-
-# Go back to root
-cd ..
-```
-
-### Step 3: Configure environment
-The `backend/.env` file is already configured for local MongoDB:
-```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/opspulse
-JWT_SECRET=opspulse_super_secret_jwt_key_2024
-```
-Only change `MONGODB_URI` if using Atlas.
-
-### Step 4: Seed the database
-```bash
-cd backend
-node config/seed.js
-```
-Expected output:
-```
-✅ Users created
-✅ Inventory created
-✅ Orders created
-✅ Tickets created
-🚀 Database seeded successfully!
-```
-
-### Step 5: Start the backend server
-```bash
-# From the backend directory:
-npm run dev
-
-# OR with plain node:
-npm start
-```
-You should see:
-```
-✅ MongoDB Connected: localhost
-🚀 OpsPulse Server running on port 5000
-📡 Socket.io enabled
-```
-
-### Step 6: Start the frontend (in a new terminal)
-```bash
-cd frontend
-npm run dev
-```
-You should see:
-```
-VITE v5.x.x ready in xxx ms
-➜  Local:   http://localhost:3000/
-```
-
-### Step 7: Open in browser
-Navigate to: **http://localhost:3000**
-
----
-
-## 🔐 Demo Accounts
-
+### Demo Accounts
 | Role | Email | Password |
-|------|-------|----------|
-| Business Owner | owner@opspulse.com | password123 |
-| Operations Manager | ops@opspulse.com | password123 |
+|---|---|---|
+| Owner | owner@opspulse.com | password123 |
+| Ops Manager | ops@opspulse.com | password123 |
+
+---
+
+## ✨ Features
+
+- 📊 **Owner Dashboard** — Revenue KPIs, 7-day trend chart, stress score, alerts
+- 🛠️ **Ops Dashboard** — Live orders, inventory bar chart, tickets table
+- 🔴 **War Room Mode** — Full-screen crisis mode with alerts and recommended actions
+- 📈 **Historical Insights** — Trend charts for revenue, stress, inventory, tickets
+- 🔌 **Live Integrations** — NewsAPI, OpenWeather, Alpha Vantage with dynamic KPI cards
+- ⚡ **Real-time Updates** — Socket.io powered live feed every 8 seconds
+- 🧠 **Business Stress Score** — 0-100 score based on tickets, inventory risk, sales gap
+- 🔐 **JWT Auth** — Role-based access (owner vs ops_manager)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React.js + Vite + Tailwind CSS + Recharts |
+| Backend | Node.js + Express.js + Socket.io |
+| Database | MongoDB + Mongoose |
+| Auth | JWT + bcrypt |
+| Deployment | Render (Frontend + Backend) + MongoDB Atlas |
 
 ---
 
@@ -115,109 +49,153 @@ Navigate to: **http://localhost:3000**
 ```
 opspulse/
 ├── backend/
-│   ├── config/
-│   │   ├── db.js              # MongoDB connection
-│   │   └── seed.js            # Database seeder
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── salesController.js
-│   │   ├── inventoryController.js
-│   │   ├── ticketsController.js
-│   │   ├── alertsController.js
-│   │   ├── stressController.js
-│   │   └── historyController.js
-│   ├── cronJobs/
-│   │   └── businessSimulator.js  # Real-time simulation + cron
-│   ├── middleware/
-│   │   └── auth.js            # JWT middleware
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Order.js
-│   │   ├── Inventory.js
-│   │   ├── Ticket.js
-│   │   ├── Alert.js
-│   │   └── History.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   └── api.js
-│   ├── .env
-│   ├── package.json
-│   └── server.js
-│
+│   ├── config/          # DB connection & seed
+│   ├── controllers/     # Business logic
+│   ├── cronJobs/        # Business simulator
+│   ├── middleware/      # JWT auth
+│   ├── models/          # MongoDB schemas
+│   ├── routes/          # API routes
+│   └── server.js        # Entry point
 └── frontend/
-    ├── src/
-    │   ├── context/
-    │   │   └── AuthContext.jsx   # JWT auth state
-    │   ├── layouts/
-    │   │   └── DashboardLayout.jsx
-    │   ├── pages/
-    │   │   ├── LandingPage.jsx
-    │   │   ├── LoginPage.jsx
-    │   │   ├── OwnerDashboard.jsx
-    │   │   ├── OpsDashboard.jsx
-    │   │   └── HistoricalInsights.jsx
-    │   ├── components/
-    │   │   ├── KPICard.jsx
-    │   │   ├── StressScore.jsx
-    │   │   ├── AlertPanel.jsx
-    │   │   ├── LiveFeed.jsx
-    │   │   └── WarRoom.jsx
-    │   ├── services/
-    │   │   ├── api.js            # Axios API calls
-    │   │   └── socket.js         # Socket.io client
-    │   ├── App.jsx
-    │   ├── main.jsx
-    │   └── index.css
-    ├── index.html
-    ├── package.json
-    ├── vite.config.js
-    └── tailwind.config.js
+    └── src/
+        ├── components/  # KPICard, StressScore, AlertPanel, WarRoom
+        ├── context/     # AuthContext
+        ├── layouts/     # DashboardLayout
+        ├── pages/       # All pages
+        └── services/    # API & Socket
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🚀 Local Setup
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | /api/auth/login | None | Login |
-| GET | /api/auth/me | JWT | Current user |
-| GET | /api/sales | JWT | Sales data |
-| GET | /api/orders | JWT | Order list |
-| GET | /api/inventory | JWT | Inventory |
-| GET | /api/tickets | JWT | Support tickets |
-| GET | /api/alerts | JWT | Active alerts |
-| PATCH | /api/alerts/:id/acknowledge | JWT | Dismiss alert |
-| GET | /api/stress-score | JWT | Business health score |
-| GET | /api/history | JWT (Owner) | Historical data |
+### Prerequisites
+- Node.js v18+
+- MongoDB (local)
+- Git
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/bhatimanish06082005-sketch/horizon-codecraftcults.git
+cd horizon-codecraftcults
+```
+
+### 2. Setup Backend
+```bash
+cd backend
+npm install
+```
+
+Create `.env` file in backend folder:
+```
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/opspulse
+JWT_SECRET=opspulse_super_secret_jwt_key_2024
+NODE_ENV=development
+```
+
+### 3. Setup Frontend
+```bash
+cd ../frontend
+npm install
+```
+
+### 4. Seed the Database
+```bash
+cd ../backend
+node config/seed.js
+```
+
+### 5. Run the App
+
+**Terminal 1 — Backend:**
+```bash
+cd backend
+npm run dev
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+Open 👉 http://localhost:3000
 
 ---
 
-## ⚙️ Features
+## 🔌 Integrations Setup
 
-- **Real-time updates** via Socket.io (new orders, tickets, alerts every ~8-25 seconds)
-- **Business Stress Score** (0-100) based on tickets + inventory + sales
-- **War Room Mode** activates automatically when stress hits critical
-- **Alert system**: Crisis, Opportunity, Anomaly types
-- **Role-based dashboards**: Owner (overview + history) vs Ops Manager (operations)
-- **Historical snapshots** saved automatically every 30 minutes via node-cron
-- **JWT authentication** with bcrypt password hashing
+Go to **Dashboard → Integrations** and add optional API keys:
+
+| Integration | Get Free Key | What it shows |
+|---|---|---|
+| 📰 NewsAPI | https://newsapi.org/register | Live business headlines |
+| 🌤️ OpenWeather | https://openweathermap.org/api | Temperature, humidity, wind |
+| 💹 Alpha Vantage | https://www.alphavantage.co/support/#api-key | Stock prices, market trend |
 
 ---
 
-## 🛠️ Troubleshooting
+## 🔄 How to Make Changes & Deploy
 
-**MongoDB connection failed:**
-- Make sure MongoDB is running: `brew services list | grep mongodb` (Mac)
-- Windows: Check Services panel for MongoDB
+### Step 1 — Make your changes in VS Code
 
-**Port already in use:**
-- Backend: Change PORT in .env
-- Frontend: Change port in vite.config.js
+Edit any file in the project locally.
 
-**Dependencies fail:**
-- Delete `node_modules` and `package-lock.json`, then `npm install` again
+### Step 2 — Save and push to GitHub
 
-**No data showing:**
-- Make sure you ran `node config/seed.js`
-- Check backend console for errors
+```bash
+git add .
+git commit -m "describe your change here"
+git push origin main
+```
+
+### Step 3 — Render auto-deploys!
+
+Render detects the push and automatically redeploys both frontend and backend within 2-3 minutes. No manual action needed! ✅
+
+### Example commits:
+```bash
+git commit -m "Add new KPI card to owner dashboard"
+git commit -m "Fix bug in stress score calculation"
+git commit -m "Update landing page hero text"
+git commit -m "Add new route to backend API"
+```
+
+---
+
+## 🌱 Seeding the Database
+
+To reset and reseed the database:
+
+**Local:**
+```bash
+cd backend
+node config/seed.js
+```
+
+**Production (Atlas):**
+```powershell
+cd backend
+$env:MONGODB_URI="your-atlas-connection-string"
+node config/seed.js
+```
+
+---
+
+## 👥 Roles
+
+| Role | Access |
+|---|---|
+| `owner` | Owner Dashboard, Historical Insights, Integrations, War Room |
+| `ops_manager` | Ops Dashboard, War Room |
+
+---
+
+## 📄 License
+
+MIT License — feel free to use and modify!
+
+---
+
+Built with ❤️ by code craft cults
