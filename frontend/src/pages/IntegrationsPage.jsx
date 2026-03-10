@@ -62,7 +62,7 @@ export default function IntegrationsPage() {
   const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/integrations', {
+    axios.get('https://opspulse-backend-0xh4.onrender.com/api/integrations', {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     }).then(res => {
       if (res.data.newsapi !== undefined) {
@@ -79,7 +79,7 @@ export default function IntegrationsPage() {
   const handleSave = async () => {
     try {
       await axios.post(
-        'http://localhost:5000/api/integrations',
+        'https://opspulse-backend-0xh4.onrender.com/api/integrations',
         { ...keys, city },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
@@ -90,12 +90,10 @@ export default function IntegrationsPage() {
 
   return (
     <div className="space-y-6">
-
       <div>
         <h1 className="font-display text-3xl font-bold text-text">Integrations</h1>
         <p className="text-textMuted text-sm mt-1">Connect live data sources to your dashboard</p>
       </div>
-
       <div className="kpi-card">
         <div className="text-xs font-mono text-textMuted uppercase tracking-wider mb-3">
           📍 Business Location (for Weather)
@@ -107,11 +105,9 @@ export default function IntegrationsPage() {
           placeholder="Enter your city e.g. Mumbai"
         />
       </div>
-
       <div className="space-y-4">
         {INTEGRATIONS.map(integration => (
           <div key={integration.id} className={`kpi-card border ${integration.border} ${integration.bg}`}>
-
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{integration.icon}</span>
@@ -134,10 +130,8 @@ export default function IntegrationsPage() {
                 </button>
               </div>
             </div>
-
             {expanded === integration.id && (
               <div className="mt-4 pt-4 border-t border-border space-y-4">
-
                 <div className="bg-bg rounded-lg p-4 border border-border">
                   <div className="text-xs font-mono text-textMuted uppercase mb-3">
                     📋 How to get your API key:
@@ -150,20 +144,13 @@ export default function IntegrationsPage() {
                       </div>
                     ))}
                   </div>
-                  <a
-                    href={integration.getKeyUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`mt-3 inline-flex items-center gap-1.5 text-xs ${integration.color} hover:underline font-mono`}
-                  >
+                  <a href={integration.getKeyUrl} target="_blank" rel="noreferrer"
+                    className={`mt-3 inline-flex items-center gap-1.5 text-xs ${integration.color} hover:underline font-mono`}>
                     Get Free API Key <ExternalLink size={10} />
                   </a>
                 </div>
-
                 <div>
-                  <label className="text-xs font-mono text-textMuted mb-1.5 block uppercase">
-                    API Key
-                  </label>
+                  <label className="text-xs font-mono text-textMuted mb-1.5 block uppercase">API Key</label>
                   <div className="relative">
                     <input
                       type={show[integration.id] ? 'text' : 'password'}
@@ -172,39 +159,28 @@ export default function IntegrationsPage() {
                       className="w-full bg-bg border border-border rounded-lg px-4 py-2.5 pr-10 text-text text-sm focus:outline-none focus:border-accent/50 font-mono"
                       placeholder={`Paste your ${integration.name} API key here`}
                     />
-                    <button
-                      type="button"
+                    <button type="button"
                       onClick={() => setShow(p => ({ ...p, [integration.id]: !p[integration.id] }))}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-text"
-                    >
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-text">
                       {show[integration.id] ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
                   </div>
                 </div>
-
               </div>
             )}
-
           </div>
         ))}
       </div>
-
       <button onClick={handleSave} className="btn-primary flex items-center gap-2">
         {saved.all ? (
-          <span className="flex items-center gap-2">
-            <CheckCircle size={16} /> Saved!
-          </span>
+          <span className="flex items-center gap-2"><CheckCircle size={16} /> Saved!</span>
         ) : (
-          <span className="flex items-center gap-2">
-            <Save size={16} /> Save All API Keys
-          </span>
+          <span className="flex items-center gap-2"><Save size={16} /> Save All API Keys</span>
         )}
       </button>
-
       <div className="text-textMuted text-xs font-mono">
         ⚠️ API keys are stored securely in your database and never shared.
       </div>
-
     </div>
   );
 }

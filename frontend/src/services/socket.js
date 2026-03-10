@@ -4,7 +4,7 @@ let socket = null;
 
 export const getSocket = () => {
   if (!socket) {
-    socket = io('http://localhost:5000', {
+    socket = io('https://opspulse-backend-0xh4.onrender.com', {
       transports: ['websocket'],
       reconnection: true,
       reconnectionDelay: 1000,
