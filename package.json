@@ -1,0 +1,15 @@
+{
+  "name": "opspulse",
+  "version": "1.0.0",
+  "description": "OpsPulse — Unified Business Health Dashboard",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "seed": "cd backend && node config/seed.js",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
