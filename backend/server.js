@@ -11,24 +11,24 @@ const { startAutoSave } = require('./cronJobs/businessSimulator');
 const app = express();
 const server = http.createServer(app);
 
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://opspulse-frontend-app.onrender.com',
+  'https://opspulse-delta.vercel.app',
+];
+
 const io = socketio(server, {
   cors: {
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:3000',
-      'https://opspulse-frontend-app.onrender.com',
-    ],
+    origin: ALLOWED_ORIGINS,
     methods: ['GET', 'POST'],
     credentials: true,
   }
 });
 
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://opspulse-frontend-app.onrender.com',
-  ],
+  origin: ALLOWED_ORIGINS,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 
@@ -47,6 +47,6 @@ connectDB().then(() => {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    startAutoSave(); // start analytics auto-save on server boot
+    startAutoSave();
   });
 });
