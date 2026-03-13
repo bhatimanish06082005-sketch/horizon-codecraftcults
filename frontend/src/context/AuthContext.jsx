@@ -3,16 +3,18 @@ import axios from 'axios';
 
 const AuthContext = createContext(null);
 
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [user, setUser]     = useState(null);
+  const [token, setToken]   = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
-      axios.get('http://localhost:5000/api/auth/me')
+      axios.get(`${BASE}/api/auth/me`)
         .then(res => {
           setUser(res.data);
           setToken(savedToken);
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+    const res = await axios.post(`${BASE}/api/auth/login`, { email, password });
     const { token: t, user: u } = res.data;
     localStorage.setItem('token', t);
     axios.defaults.headers.common['Authorization'] = `Bearer ${t}`;
